@@ -33,25 +33,29 @@ class PackageStatusScraper:
             'data': [{'num': package[1]}]
         }
         response = requests.post(self.API_url, json=data, headers=self.headers)
+        if response.json()['msg'] == 'abN':
+            print('Your ip has been banned!')
+        returned_data = None
         print('Processing %s ...' % package[1])
         try:
             returned_data = response.json()['dat'][0]['track']['e']
         except TypeError:
-            returned_data = 'error'
+            pass
         except IndexError:
-            returned_data = 'error'
+            pass
         return returned_data
 
     def run(self):
-        for row in INPUT_DATA[1:10]:
+        for row in INPUT_DATA[1:100]:
             data = self.get_package_status(row)
-            status = ''
             if data == 10:
                 status = 'In transit'
             elif data == 40:
                 status = 'Delivered'
             elif data == 0:
                 status = 'Not found'
+            else:
+                status = 'error'
             row.append(status)
             # row.append(data)
             OUTPUT_DATA.append(row)
