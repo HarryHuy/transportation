@@ -1,5 +1,4 @@
 import csv
-from lxml.etree import fromstring
 import requests
 
 
@@ -16,8 +15,6 @@ with open(INPUT_FILE, 'r') as f:
 INPUT_DATA[0].append('Package status')
 
 OUTPUT_DATA.append(INPUT_DATA[0])
-
-# print(OUTPUT_DATA)
 
 
 class PackageStatusScraper:
@@ -36,22 +33,39 @@ class PackageStatusScraper:
             'data': [{'num': package[1]}]
         }
         response = requests.post(self.API_url, json=data, headers=self.headers)
-        returned_data = response.json()['dat'][0]['track']['e']
+        print('Processing %s ...' % package[1])
+        try:
+            returned_data = response.json()['dat'][0]['track']['e']
+        except TypeError:
+            returned_data = 'error'
+        except IndexError:
+            returned_data = 'error'
         return returned_data
 
     def run(self):
-        for row in INPUT_DATA[1:5]:
+        for row in INPUT_DATA[1:10]:
             data = self.get_package_status(row)
-            row.append(data)
+            status = ''
+            if data == 10:
+                status = 'In transit'
+            elif data == 40:
+                status = 'Delivered'
+            elif data == 0:
+                status = 'Not found'
+            row.append(status)
+            # row.append(data)
             OUTPUT_DATA.append(row)
-        # data = self.get_package_status('LS315575715CN')
-        # print(data)
+
+    def get_input_data(self):
+        pass
+
+    def write_output_file(self):
+        pass
 
 
 if __name__ == '__main__':
     scraper = PackageStatusScraper()
     scraper.run()
-    # print(OUTPUT_DATA)
     with open(OUTPUT_FILE, 'w') as f:
         writer = csv.writer(f)
         writer.writerows(OUTPUT_DATA)
