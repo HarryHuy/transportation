@@ -1,4 +1,4 @@
-# Get Packages Status Script
+# Get Packages Status from 17track.net
 
 ## How to run:
 
@@ -9,5 +9,4 @@
         
         python transport.py
    
-+ Your output will be in data folder too     
-
++ Your output will be placed back in data folder 
