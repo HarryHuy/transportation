@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "transportation"
+version = "0.1.0"
+description = "Get packages transporting status from 17track.net"
+authors = ["harry <harryhuydoan@gmail.com>"]
+license = "GPL"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+certifi = "2017.11.5"
+chardet = "3.0.4"
+cssselect = "1.0.1"
+idna = "2.6"
+lxml = "4.1.1"
+requests = "2.18.4"
+urllib3 = "1.22"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
